@@ -1,18 +1,24 @@
 package M;
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 public class M322 {
     public int coinChange(int[] coins, int amount) {
-return dfs(coins,amount, new Integer[amount+1]);
-    }
-    public static int dfs(int[]coins,int amount,Integer[] dp){
-        if (amount==0)return 0;
-        if (dp[amount]!=null)return dp[amount];
-        for(int coin : coins){
-            if (amount>coin) {
-                dp[amount]=1+dfs(coins, amount - coin, dp);
+        if (amount < 0 || coins.length == 0 || coins == null)
+            return 0;
+
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+
+        for (int i = 0; i <= amount; i++) {
+            for (int coin : coins) {
+                if (i - coin >= 0) {
+                    dp[i]=Math.min(dp[i], 1 + dp[i - coin]);
+                }
             }
         }
-        return dp[amount];
-
+        return dp[amount] !=amount+1 ? dp[amount] : -1;
     }
 }
